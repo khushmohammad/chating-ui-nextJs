@@ -16,8 +16,9 @@ export default function Home({
   const router = useRouter();
 
   const [userList, setUser] = useState("");
-  const [activeUser, setActiveUser] = useState("");
+  const [search, setSearch] = useState("")
 
+  console.log(search)
   useEffect(() => {
     setUser(userData);
   }, []);
@@ -62,16 +63,17 @@ export default function Home({
                   className="d-flex border-bottom"
                   style={{ background: "#fff", padding: "10px" }}
                 >
-                  <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1">
+                  <div className="input-group">
+                    <span className="input-group-text" id="basic-addon1">
                       <BsSearch />
                     </span>
                     <input
                       type="text"
-                      class="form-control"
+                      className="form-control"
                       placeholder="search"
                       aria-label="search"
                       aria-describedby="basic-addon1"
+                      onChange={(e) => setSearch(e.target.value)}
                     />
                   </div>
                 </form>
@@ -85,7 +87,7 @@ export default function Home({
                 >
                   {userData &&
                     userData.user
-                      .filter((data) => data.id != router.query.activeuser)
+                      .filter((data) => data.id != router.query.activeuser).filter((data) => data.name.includes(search))
                       .map((data, index) => (
                         <div className="flex-shrink-0" key={index}>
                           <Link
@@ -246,7 +248,7 @@ export async function getServerSideProps(context) {
   const activeuserDataUser = await activeuserData.find(
     (data) => data.id == userId
   );
-  const chatuser = context.query.activeuser ? context.query.chatuser : 1;
+  const chatuser = context.query.chatuser ? context.query.chatuser : 1;
   const chatactiveuserData = await activeuserData.find(
     (data) => data.id == chatuser
   );
