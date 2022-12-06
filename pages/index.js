@@ -1,31 +1,26 @@
-import axios from 'axios'
-import Head from 'next/head'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
-import styles from '../styles/Home.module.css'
+import axios from "axios";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import styles from "../styles/Home.module.css";
+import { BsSearch } from "react-icons/bs";
+import { MdSend } from "react-icons/md";
 
-export default function Home({ userData, activeuserDataUser, chatactiveuserData }) {
+export default function Home({
+  userData,
+  activeuserDataUser,
+  chatactiveuserData,
+}) {
+  const router = useRouter();
 
-
-  const router = useRouter()
-
-
-
-  const [userList, setUser] = useState("")
-  const [activeUser, setActiveUser] = useState("")
-
+  const [userList, setUser] = useState("");
+  const [activeUser, setActiveUser] = useState("");
 
   useEffect(() => {
-
-    setUser(userData)
-
-
-  }, [])
-
-
-
+    setUser(userData);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -35,107 +30,227 @@ export default function Home({ userData, activeuserDataUser, chatactiveuserData 
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className='bg-secondary' style={{ height: "100vh" }}>
-
-        <div className='pt-5' >
+      <main
+        className="bg-secondary"
+        style={{ height: "100vh", color: "#838383" }}
+      >
+        <div className="pt-5">
           <Container>
             <Row>
-
-              <Col md={4} className=" p-0 position-relative bg-primary" style={{ maxHeight: "664px", color: "#fff" }}>
-
-                <div className="d-flex align-items-center mx-2 my-3 px-3">
+              <Col
+                md={4}
+                className=" p-0 position-relative"
+                style={{
+                  maxHeight: "80vh",
+                  background: "#f0f2f5",
+                  borderRight: "1px solid #ddd",
+                }}
+              >
+                <div className="d-flex align-items-center mx-2 my-3 px-3 px-2">
                   <div className="flex-shrink-0">
-                    <img src="https://dummyimage.com/50x50/000/fff" alt="Profile" className='rounded-circle' />
+                    <img
+                      src="https://dummyimage.com/50x50/000/fff"
+                      alt="Profile"
+                      className="rounded-circle"
+                    />
                   </div>
                   <div className="flex-grow-1 ms-3">
                     {activeuserDataUser.name}
                   </div>
                 </div>
-                <form className="d-flex px-3">
-                  <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                  <button className="btn btn-success" type="submit">Search</button>
+                <form
+                  className="d-flex border-bottom"
+                  style={{ background: "#fff", padding: "10px" }}
+                >
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">
+                      <BsSearch />
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="search"
+                      aria-label="search"
+                      aria-describedby="basic-addon1"
+                    />
+                  </div>
                 </form>
-                <div className='message-body p-0 overflow-auto' style={{ maxHeight: "calc(100% - 121px)" }} >
-                  {userData && userData.user.filter((data) => data.id != router.query.activeuser).map((data, index) =>
-                    <div className="flex-shrink-0" key={index}>
+                <div
+                  className="message-body p-0 overflow-auto"
+                  style={{
+                    minHeight: "65vh",
 
-                      <Link href={{ pathname: '/', query: { activeuser: router.query.activeuser, chatuser: data.id } }} legacyBehavior>
-                        <a style={{ textDecoration: "none" }} >
-                          <div className="d-flex align-items-center my-2 px-3 py-3  " style={{ background: "#3642e9" }} >
-                            <div>
-                              <img src="https://dummyimage.com/50x50/000/fff" alt="Profile" className='rounded-circle' />
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <p className='m-0 text-light' style={{ fontSize: "16px", }} >{data.name}</p>
-                              <p className='m-0  text-light' style={{ fontSize: "12px", textDecoration: "none" }} >{data.status}</p>
-                            </div>
-                          </div>
-                        </a>
-                      </Link>
-
-                    </div>
-                  )}
-
+                    background: "#fff",
+                  }}
+                >
+                  {userData &&
+                    userData.user
+                      .filter((data) => data.id != router.query.activeuser)
+                      .map((data, index) => (
+                        <div className="flex-shrink-0" key={index}>
+                          <Link
+                            href={{
+                              pathname: "/",
+                              query: {
+                                activeuser: router.query.activeuser,
+                                chatuser: data.id,
+                              },
+                            }}
+                            legacyBehavior
+                          >
+                            <a style={{ textDecoration: "none" }}>
+                              <div
+                                className="d-flex align-items-center  chat-contact"
+                                style={{ paddingLeft: "1rem" }}
+                              >
+                                <div className="py-2">
+                                  <img
+                                    src="https://dummyimage.com/50x50/000/fff"
+                                    alt="Profile"
+                                    width={45}
+                                    className="rounded-circle"
+                                  />
+                                </div>
+                                <div
+                                  className="flex-grow-1 d-flex justify-content-between ms-3 py-3 border-bottom"
+                                  style={{
+                                    color: "#838383",
+                                    paddingRight: "1rem",
+                                  }}
+                                >
+                                  <div>
+                                    <p
+                                      className="m-0 "
+                                      style={{ fontSize: "16px" }}
+                                    >
+                                      {data.name}
+                                    </p>
+                                    <p
+                                      className="m-0  "
+                                      style={{
+                                        fontSize: "12px",
+                                        textDecoration: "none",
+                                      }}
+                                    >
+                                      {data.status}
+                                    </p>
+                                  </div>
+                                  <div style={{ fontSize: "14px" }}>
+                                    timestamp
+                                  </div>
+                                </div>
+                              </div>
+                            </a>
+                          </Link>
+                        </div>
+                      ))}
                 </div>
-
-
-
               </Col>
-              <Col md={8} className=" p-0 position-relative" style={{ maxHeight: "664px", background: "#ebebeb" }}>
-
-                <nav className="navbar navbar-light bg-light">
-                  <div className="container-fluid">
-                    <div className="d-flex align-items-center my-3">
+              <Col
+                md={8}
+                className=" p-0 position-relative"
+                style={{ maxHeight: "80vh" }}
+              >
+                <nav className="navbar" style={{ background: "#f0f2f5" }}>
+                  <div className="container-fluid h-100">
+                    <div className="d-flex align-items-center my-2">
                       <div className="flex-shrink-0">
-                        <img src="https://dummyimage.com/50x50/000/fff" alt="Profile" className='rounded-circle' />
+                        <img
+                          src="https://dummyimage.com/50x50/000/fff"
+                          alt="Profile"
+                          className="rounded-circle"
+                        />
                       </div>
                       <div className="flex-grow-1 ms-3">
                         {chatactiveuserData.name}
                       </div>
                     </div>
+                    <div></div>
                   </div>
                 </nav>
-                <div className='message-body px-3 overflow-auto' style={{ background: "#ebebeb", maxHeight: "calc(100% - 146px)" }} >
-
-                  <ul className='list-group'>
-                    <li className='sent'>
-                      <p>hellow</p>
-                    </li>
-                    <li className='replay'>
-                      <p>hellow</p>
-                    </li>
-                  </ul>
-                </div>
-                <div className='type-message w-100 position-absolute bottom-0 '  >
-                  <div className="input-group input-group-lg bg-light">
-                    <input type="text" className="form-control border rounded-0" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2" />
-                    <span className="input-group-text" id="basic-addon2">Send</span>
+                <div
+                  className="message-body px-3overflow-auto"
+                  style={{
+                    backgroundColor: "#ebebeb",
+                    minHeight: "calc(100% - 125px)",
+                  }}
+                >
+                  <div
+                    style={{
+                      background:
+                        "url(https://mir-s3-cdn-cf.behance.net/project_modules/disp/2d9dd173426833.5c08f5634ff45.png)",
+                      minHeight: "70vh",
+                    }}
+                  >
+                    <div
+                      className="d-flex flex-column align-items-start"
+                      style={{ padding: "20px" }}
+                    >
+                      <p
+                        className="chatScreen__text"
+                        style={{
+                          marginLeft: "10px",
+                          backgroundColor: "#fff",
+                          padding: "12px",
+                          borderRadius: "20px",
+                        }}
+                      >
+                        Hello
+                      </p>
+                      <p
+                        className="chatScreen__text"
+                        style={{
+                          marginLeft: "10px",
+                          backgroundColor: "#fff",
+                          padding: "12px",
+                          borderRadius: "20px",
+                        }}
+                      >
+                        Hey
+                      </p>
+                    </div>
                   </div>
                 </div>
-
-
-
+                <div className="type-message w-100 position-absolute bottom-0 ">
+                  <div className="input-group input-group-lg bg-light">
+                    <input
+                      type="text"
+                      className="form-control border rounded-0"
+                      style={{ fontSize: "16px" }}
+                      placeholder="Recipient's username"
+                      aria-label="Recipient's username"
+                      aria-describedby="basic-addon2"
+                    />
+                    <span
+                      className="input-group-text rounded-0"
+                      id="basic-addon2"
+                    >
+                      <MdSend />
+                    </span>
+                  </div>
+                </div>
               </Col>
             </Row>
           </Container>
         </div>
       </main>
-
-
     </div>
-  )
+  );
 }
-
 
 export async function getServerSideProps(context) {
   const res = await axios.get("http://localhost:3000/api/user");
-  const userData = await res.data
+  const userData = await res.data;
   const activeuserData = await res.data.user;
-  const userId = context.query.activeuser ? context.query.activeuser : 1
-  const activeuserDataUser = await activeuserData.find((data) => data.id == userId)
-  const chatuser = context.query.activeuser ? context.query.chatuser : 1
-  const chatactiveuserData = await activeuserData.find((data) => data.id == chatuser)
+  const userId = context.query.activeuser ? context.query.activeuser : 1;
+  const activeuserDataUser = await activeuserData.find(
+    (data) => data.id == userId
+  );
+  const chatuser = context.query.activeuser ? context.query.chatuser : 1;
+  const chatactiveuserData = await activeuserData.find(
+    (data) => data.id == chatuser
+  );
   return {
     props: { userData, activeuserDataUser, chatactiveuserData }, // will be passed to the page component as props
-  }
+  };
 }
