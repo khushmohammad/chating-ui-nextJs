@@ -1,8 +1,32 @@
+import axios from 'axios'
 import Head from 'next/head'
-import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { Col, Container, Row } from 'react-bootstrap'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+export default function Home({ userData, activeuserDataUser, chatactiveuserData }) {
+
+
+  const router = useRouter()
+
+
+
+  const [userList, setUser] = useState("")
+  const [activeUser, setActiveUser] = useState("")
+
+
+  useEffect(() => {
+
+    setUser(userData)
+
+
+  }, [])
+
+
+
+
   return (
     <div className={styles.container}>
       <Head>
@@ -11,61 +35,107 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      <main className='bg-secondary' style={{ height: "100vh" }}>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+        <div className='pt-5' >
+          <Container>
+            <Row>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+              <Col md={4} className=" p-0 position-relative bg-primary" style={{ maxHeight: "664px", color: "#fff" }}>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+                <div className="d-flex align-items-center mx-2 my-3 px-3">
+                  <div className="flex-shrink-0">
+                    <img src="https://dummyimage.com/50x50/000/fff" alt="Profile" className='rounded-circle' />
+                  </div>
+                  <div className="flex-grow-1 ms-3">
+                    {activeuserDataUser.name}
+                  </div>
+                </div>
+                <form className="d-flex px-3">
+                  <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                  <button className="btn btn-success" type="submit">Search</button>
+                </form>
+                <div className='message-body p-0 overflow-auto' style={{ maxHeight: "calc(100% - 121px)" }} >
+                  {userData && userData.user.filter((data) => data.id != router.query.activeuser).map((data, index) =>
+                    <div className="flex-shrink-0" key={index}>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+                      <Link href={{ pathname: '/', query: { activeuser: router.query.activeuser, chatuser: data.id } }} legacyBehavior>
+                        <a style={{ textDecoration: "none" }} >
+                          <div className="d-flex align-items-center my-2 px-3 py-3  " style={{ background: "#3642e9" }} >
+                            <div>
+                              <img src="https://dummyimage.com/50x50/000/fff" alt="Profile" className='rounded-circle' />
+                            </div>
+                            <div className="flex-grow-1 ms-3">
+                              <p className='m-0 text-light' style={{ fontSize: "16px", }} >{data.name}</p>
+                              <p className='m-0  text-light' style={{ fontSize: "12px", textDecoration: "none" }} >{data.status}</p>
+                            </div>
+                          </div>
+                        </a>
+                      </Link>
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+                    </div>
+                  )}
+
+                </div>
+
+
+
+              </Col>
+              <Col md={8} className=" p-0 position-relative" style={{ maxHeight: "664px", background: "#ebebeb" }}>
+
+                <nav className="navbar navbar-light bg-light">
+                  <div className="container-fluid">
+                    <div className="d-flex align-items-center my-3">
+                      <div className="flex-shrink-0">
+                        <img src="https://dummyimage.com/50x50/000/fff" alt="Profile" className='rounded-circle' />
+                      </div>
+                      <div className="flex-grow-1 ms-3">
+                        {chatactiveuserData.name}
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+                <div className='message-body px-3 overflow-auto' style={{ background: "#ebebeb", maxHeight: "calc(100% - 146px)" }} >
+
+                  <ul className='list-group'>
+                    <li className='sent'>
+                      <p>hellow</p>
+                    </li>
+                    <li className='replay'>
+                      <p>hellow</p>
+                    </li>
+                  </ul>
+                </div>
+                <div className='type-message w-100 position-absolute bottom-0 '  >
+                  <div className="input-group input-group-lg bg-light">
+                    <input type="text" className="form-control border rounded-0" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                    <span className="input-group-text" id="basic-addon2">Send</span>
+                  </div>
+                </div>
+
+
+
+              </Col>
+            </Row>
+          </Container>
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+
     </div>
   )
+}
+
+
+export async function getServerSideProps(context) {
+  const res = await axios.get("http://localhost:3000/api/user");
+  const userData = await res.data
+  const activeuserData = await res.data.user;
+  const userId = context.query.activeuser ? context.query.activeuser : 1
+  const activeuserDataUser = await activeuserData.find((data) => data.id == userId)
+  const chatuser = context.query.activeuser ? context.query.chatuser : 1
+  const chatactiveuserData = await activeuserData.find((data) => data.id == chatuser)
+  return {
+    props: { userData, activeuserDataUser, chatactiveuserData }, // will be passed to the page component as props
+  }
 }
